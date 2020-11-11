@@ -190,6 +190,8 @@ def p_IF_CONDITIONAL(p):
     for x in p:
         if x:
             print("IF_cond: " + x)
+    global exp_list
+    print("IF_cond expr list: ", exp_list)
     print("\tCORRECTO IF")
 
 def p_ELSE_CONDITIONAL(p):
@@ -333,9 +335,6 @@ def operate(exp_list):
                 elif exp_list[op] == "/":
                     print(num_accumul, " divided by ", float(exp_list[num]))
                     num_accumul/=float(exp_list[num])
-                # elif exp_list[op] == ">":
-                #     print(num_accumul, " bigger than ", float(exp_list[num]))
-                #     num_accumul/=float(exp_list[num])
                 op-=1
                 num+=1
             sim_list.append(str(num_accumul))
@@ -371,8 +370,56 @@ def operate(exp_list):
     if(len(sim_list) == 1):
         return sim_list[0]
 
+    ##############################################################################
     print("Lista antes de bool logic: ", sim_list)
-    return 0
+
+    length = len(sim_list)
+    pointer = 1
+    while pointer < len(sim_list):
+        while pointer < len(sim_list) and sim_list[pointer] in [">", ">=", "<", "<=", "=", "!="]:
+            accumul = float(sim_list[pointer - 1])
+            if sim_list[pointer] == ">":
+                print(accumul, " bigger than ", float(sim_list[pointer+1]))
+                accumul = accumul>float(sim_list[pointer+1])
+            elif sim_list[pointer] == ">=":
+                print(accumul, " bigger or equat to ", float(sim_list[pointer+1]))
+                accumul = accumul>=float(sim_list[pointer+1])
+            elif sim_list[pointer] == "<":
+                print(accumul, " smaller than ", float(sim_list[pointer+1]))
+                accumul = accumul<float(sim_list[pointer+1])
+            elif sim_list[pointer] == "<=":
+                print(accumul, " smaller or equal to ", float(sim_list[pointer+1]))
+                accumul = accumul<=float(sim_list[pointer+1])
+            elif sim_list[pointer] == "=":
+                print(accumul, " equal to ", float(sim_list[pointer+1]))
+                accumul = accumul==float(sim_list[pointer+1])
+            elif sim_list[pointer] == "=":
+                print(accumul, " equal to ", float(sim_list[pointer+1]))
+                accumul = accumul==float(sim_list[pointer+1])
+            elif sim_list[pointer] == "!=":
+                print(accumul, " not equal to ", float(sim_list[pointer+1]))
+                accumul = accumul != float(sim_list[pointer+1])
+            sim_list = sim_list[:pointer-1] + [accumul] + sim_list[pointer+2:]
+            pointer+=2
+            print("Sim list: ", sim_list)
+        else:
+            pointer+=2
+
+    length = len(sim_list)
+    pointer = 1
+    while pointer < len(sim_list):
+            accumul = sim_list[pointer - 1]
+            if sim_list[pointer] == "&&":
+                print(accumul, " AND ", sim_list[pointer+1])
+                accumul = accumul and sim_list[pointer+1]
+            elif sim_list[pointer] == "°°":
+                print(accumul, " OR ", sim_list[pointer+1])
+                accumul = accumul or sim_list[pointer+1]
+            sim_list = sim_list[:pointer-1] + [accumul] + sim_list[pointer+2:]
+            pointer=1
+            print("Sim list: ", sim_list, pointer)
+    print("Result", sim_list[0])
+    return sim_list[0]
 
 def programStatus():
     global exp_list
@@ -383,6 +430,12 @@ def programStatus():
     print("Nombre de variables: ", var_name)
     print("Valor de variables: ", var_val)
 
+#######################################################################
+
+
+
+
+#######################################################################
 
 #lexer = lex.lex()
 lexer = lex.lex(debug=1)
