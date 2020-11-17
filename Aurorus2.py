@@ -79,6 +79,21 @@ t_OR = r'°°'
 # t_ID = r'[a-zA-Z_][a-zA-Z0-9_]*'`
 # t_VAL = r'([0-9]+)'
 
+def t_IF(t):
+    r'if'
+    t.type = reserved.get(t.value, 'if')
+
+    # print("HOLAAAAAAAAAAA")
+    # global expression_stack
+    # global exp_list
+    # print(exp_list)
+    # if(len(exp_list)>0):
+    #     expression_stack.append(exp_list.copy())
+    #     print(exp_list)
+    #     print("------------------->appended in exp stack")
+    #     exp_list.clear()
+    return t
+
 def t_VAL(t):
     r'([0-9]+)'
     t.type = reserved.get(t.value, 'VAL')
@@ -144,12 +159,14 @@ def p_STRUCTURES(p):
 def p_VAR(p):
     '''
     VAR : ID COMMA VAR
-        | ID IS_VALUE VALUE
+        | ID IS_VALUE EXP
     '''
     global var_val
     global exp_list
     global var_name
     global curren_var
+    global instruction_stack
+    global expression_stack
     # for x in p:
     #     print("hey")
     #     if x:
@@ -157,14 +174,17 @@ def p_VAR(p):
     # global var_name
     # global curren_var
     curren_var = p[1]
+    exp = expression_stack.pop()
     if not  p[1] in var_name:
         curren_var = p[1]
         var_name.append(curren_var)
-        var_val.append(parse_subops(exp_list))
-    else:
-        var_val[var_name.index(curren_var)] = parse_subops(exp_list)
+        var_val.append(exp)
+        instruction_stack.append(["=", exp, "", curren_var ])
         var_counter=+1
-    exp_list.clear()
+    else:
+        var_val[var_name.index(curren_var)] = exp
+        instruction_stack.append(["=", exp, "", curren_var ])
+    print(exp_list)
     print("\tCORRECTO VAR")
 
 def p_INPUT(p):
@@ -184,14 +204,26 @@ def p_OUTPUT(p):
 
 def p_IF_CONDITIONAL(p):
     '''
-    IF_CONDITIONAL  : IF OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
-                    | IF OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    IF_CONDITIONAL  : IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
+                    | IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     '''
     for x in p:
         if x:
             print("IF_cond: " + x)
     global exp_list
-    print("IF_cond expr list: ", exp_list)
+    global instruction_stack
+    global temp_counter
+    global expression_stack
+    if len(exp_list)>0:
+        expression_stack.append(exp_list.copy())
+        exp_list.clear()
+    instruction_stack.append(["=", expression_stack.pop(), "", temp_counter])
+    temp_counter+=1
+    instruction_stack.append(["==", 0, "", len(callback_stack)])
+    callback_stack.append(len(callback_stack))
+
+    # var_name_temporal.
+    print("Finished IF: ", exp_list)
     print("\tCORRECTO IF")
 
 def p_ELSE_CONDITIONAL(p):
@@ -202,19 +234,19 @@ def p_ELSE_CONDITIONAL(p):
 
 def p_WHILE_LOOP(p):
     '''
-    WHILE_LOOP : WHILE OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    WHILE_LOOP : WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     '''
     print("\tCORRECTO WHILE")
 
 def p_DO_WHILE_LOOP(p):
     '''
-    DO_WHILE_LOOP : DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS
+    DO_WHILE_LOOP : DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     '''
     print("\tCORRECTO DO WHILE")
 
 def p_FOR_LOOP(p):
     '''
-    FOR_LOOP : FOR OPEN_PARENTHESIS VALUE COLON VALUE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES 
+    FOR_LOOP : FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES 
     '''
     print("\tCORRECTO FOR")
 
@@ -227,6 +259,17 @@ def p_FUNCTION(p):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Expresiones
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def p_EXP(p):
+    '''
+    EXP	: VALUE
+    '''
+    
+    global expression_stack
+    global exp_list
+    expression_stack.append(exp_list.copy())
+    exp_list.clear()
+    print("\tCORRECTO EXP")
+
 
 def p_VALUE(p):
     # TODO ad ELOGIC & EARITH
@@ -243,7 +286,7 @@ def p_VALUE(p):
     global exp_list
     for x in p:
         if x:
-            # print("Value: " + x)
+            print("Value------------>: " + x)
             exp_list.append(x)
     print("\tCORRECTO VALUE")
 
@@ -254,9 +297,6 @@ def p_EARITH(p):
             | VALUE SUMOP VALUE
             | VALUE SUBOP VALUE
     '''
-    # for x in range(1, 4):
-    #     # if p[x]:
-    #     print("Value: " + p[x])
     global exp_list
     for x in p:
         if x:
@@ -294,6 +334,7 @@ def p_ELOGIC(p):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def parse_subops(exp_list):
+    print("Lista inicial de expresiones: ", exp_list)
     x=0
     exp_list_copy = exp_list.copy()
     while x < len(exp_list_copy):
@@ -425,10 +466,32 @@ def programStatus():
     global exp_list
     global var_name
     global var_val
+    global instruction_stack
+    global expression_stack
 
     print("Lista de expresiones: ", exp_list)
     print("Nombre de variables: ", var_name)
     print("Valor de variables: ", var_val)
+    print("Instruction stack:")
+    for instruction in instruction_stack:
+        print(instruction)
+    print("Expression stack:")
+    for exp in expression_stack:
+        print(exp)
+
+
+def reset():
+    global exp_list
+    global var_name
+    global var_val
+    global instruction_stack
+    global expression_stack
+
+    exp_list.clear()
+    var_name.clear()
+    var_val.clear()
+    instruction_stack.clear()
+    expression_stack.clear()    
 
 #######################################################################
 
@@ -448,7 +511,20 @@ var_counter = 0
 curren_var = ""
 
 var_val_temporal = []
-var_name_temporal = []
+temp_counter=0
+
+
+#######################################################################
+########### Quadruplos de instrucciones
+#######################################################################
+
+instruction_stack = []
+temp_counter=0
+callback_stack=[]
+expression_stack = []
+
+
+#######################################################################
 
 while True:
     try:
@@ -466,5 +542,4 @@ while True:
     # print("Respuesta: ", parse_subops(exp_list))
     # print(exp_op)
     # exp_op.clear()
-    var_name.clear()
-    var_val.clear()
+    reset()
