@@ -154,6 +154,11 @@ def p_STRUCTURES(p):
                 | FUNCTION STRUCTURES
                 | empty
     '''
+
+    # global instruction_stack
+    # global main_instruction_stack
+    # main_instruction_stack.insert(0, instruction_stack.copy())
+    # instruction_stack.clear()
     print("\tCORRECTO STRUCTURES")
 
 def p_VAR(p):
@@ -468,6 +473,7 @@ def programStatus():
     global var_val
     global instruction_stack
     global expression_stack
+    global main_instruction_stack
 
     print("Lista de expresiones: ", exp_list)
     print("Nombre de variables: ", var_name)
@@ -478,6 +484,8 @@ def programStatus():
     print("Expression stack:")
     for exp in expression_stack:
         print(exp)
+    for exp in main_instruction_stack:
+        print(exp)
 
 
 def reset():
@@ -486,12 +494,14 @@ def reset():
     global var_val
     global instruction_stack
     global expression_stack
+    global main_instruction_stack
 
     exp_list.clear()
     var_name.clear()
     var_val.clear()
     instruction_stack.clear()
-    expression_stack.clear()    
+    expression_stack.clear()
+    main_instruction_stack.clear()
 
 #######################################################################
 
@@ -522,7 +532,7 @@ instruction_stack = []
 temp_counter=0
 callback_stack=[]
 expression_stack = []
-
+main_instruction_stack = []
 
 #######################################################################
 
