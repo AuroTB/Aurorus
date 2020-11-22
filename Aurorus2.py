@@ -120,8 +120,9 @@ def t_FUNC(t):
     global jump_stack
     global jumps
 
-    func_names.append("")
+    func_names.append(("", len(instruction_stack)))
     instruction_stack.append(["go", "", "", len(jumps)])
+    func_names.append(("", len(instruction_stack)))
     jump_stack.append(len(jumps))
     jumps.append(0)
     struc_stack.append([2,0])
@@ -142,7 +143,7 @@ def t_WHILE(t):
     r'while'
     t.type = reserved.get(t.value, 'WHILE')
 
-    if(len(struc_stack) and struc_stack[-1][0] == 1):
+    if(struc_stack[-1][0] == 1):
         global instruction_stack
         global jump_stack
         global temp_var_stack
@@ -255,7 +256,7 @@ def t_ID(t):
     t.type = reserved.get(t.value, 'ID')
 
     global instruction_stack
-    if(struc_stack[-1][0] != 2):
+    if (struc_stack[-1][0] != 2):
         instruction_stack.append(["=", "", "", t.value])
     return t
     
@@ -437,6 +438,7 @@ def p_VALUE(p):
             | ELOGIC
             | OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS
             | VAL
+            | ID
     '''
     global exp_list
     for x in p:
@@ -686,7 +688,7 @@ temp_var_stack = []
 jump_stack = []
 jumps = []
 for_jumps = []
-struc_stack = []
+struc_stack = [(0,0)]
 temp_counter=0
 
 callback_stack=[]
