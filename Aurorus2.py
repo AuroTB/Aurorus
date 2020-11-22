@@ -11,14 +11,14 @@ import ply.yacc as yacc
 import sys
 
 reserved = {
-    'read' : 'READ',
-    'print' : 'PRINT',
-    'if' : 'IF',
-    'else' : 'ELSE',
-    'while' : 'WHILE',
-    'do' : 'DO',
-    'for' : 'FOR',
-    'func' : 'FUNC'
+    # 'read' : 'READ',
+    # 'print' : 'PRINT',
+    # 'if' : 'IF',
+    # 'else' : 'ELSE',
+    # 'while' : 'WHILE',
+    # 'do' : 'DO',
+    # 'for' : 'FOR',
+    # 'func' : 'FUNC'
 }
 
 tokens = [
@@ -42,7 +42,16 @@ tokens = [
     'LE',
     'GE',
     'OR',
-    'AND'
+    'AND',
+    'IF',
+    'ELSE',
+    'SEQUENCE',
+    'FOR',
+    'WHILE',
+    'FUNC',
+    'DO',
+    'READ',
+    'PRINT'
 ] + list(reserved.values())
 
 t_ignore = r' \n\t'
@@ -56,7 +65,6 @@ t_CLOSE_PARENTHESIS  = r'\)'
 # t_PRINT = r'print'
 # t_IF = r'if'
 t_OPEN_BRACES = r'\{'
-t_CLOSE_BRACES = r'\}'
 t_COLON = r'\:'
 t_SUMOP = r'\+'
 t_MULOP = r'\*'
@@ -79,19 +87,162 @@ t_OR = r'°°'
 # t_ID = r'[a-zA-Z_][a-zA-Z0-9_]*'`
 # t_VAL = r'([0-9]+)'
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Logic of structures
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def t_READ(t):
+    r'read'
+    t.type = reserved.get(t.value, 'READ')
+
+    global instruction_stack
+
+    instruction_stack.append(["read", "", "", ""])
+    print("READ code")
+    return t
+
+def t_PRINT(t):
+    r'print'
+    t.type = reserved.get(t.value, 'PRINT')
+
+    global instruction_stack
+
+    instruction_stack.append(["print", "", "", ""])
+    print("PRINT code")
+    return t
+
+def t_FUNC(t):
+    r'func'
+    t.type = reserved.get(t.value, 'FUNC')
+
+    global func_names
+    global instruction_stack
+    global jump_stack
+    global jumps
+
+    func_names.append("")
+    instruction_stack.append(["go", "", "", len(jumps)])
+    jump_stack.append(len(jumps))
+    jumps.append(0)
+    struc_stack.append([2,0])
+
+    print("Inicio de FUNC")
+    return t
+
+def t_DO(t):
+    r'do'
+    t.type = reserved.get(t.value, 'DO')
+
+    global struc_stack
+    struc_stack.append([3,len(instruction_stack)])
+    print("Inicio de DO")
+    return t
+
+def t_WHILE(t):
+    r'while'
+    t.type = reserved.get(t.value, 'WHILE')
+
+    if(len(struc_stack) and struc_stack[-1][0] == 1):
+        global instruction_stack
+        global jump_stack
+        global temp_var_stack
+        global jumps
+        struc_stack.append([1,len(instruction_stack)])
+        instruction_stack.append(["=", "", "", len(temp_var_stack)])
+        instruction_stack.append(["==", False, len(temp_var_stack), len(jumps)])
+        temp_var_stack.append(0)
+        jump_stack.append(len(jumps))
+        jumps.append(0)
+        print("Inicio de WHILE")
+    return t
+
+def t_FOR(t):
+    r'for'
+    t.type = reserved.get(t.value, 'FOR')
+    print("Inicio de FOR")
+    return t
+
 def t_IF(t):
     r'if'
-    t.type = reserved.get(t.value, 'if')
+    t.type = reserved.get(t.value, 'IF')
 
-    # print("HOLAAAAAAAAAAA")
-    # global expression_stack
-    # global exp_list
-    # print(exp_list)
-    # if(len(exp_list)>0):
-    #     expression_stack.append(exp_list.copy())
-    #     print(exp_list)
-    #     print("------------------->appended in exp stack")
-    #     exp_list.clear()
+    global instruction_stack
+    global jump_stack
+    global temp_var_stack
+    global jumps
+    global struc_stack
+    instruction_stack.append(["=", "", "", len(temp_var_stack)])
+    instruction_stack.append(["==", False, len(temp_var_stack), len(jumps)])
+    temp_var_stack.append(0)
+    jump_stack.append(len(jumps))
+    jumps.append(0)
+    struc_stack.append([0,0])
+    print("Inicio de IF")
+    return t
+
+def t_ELSE(t):
+    r'else'
+    t.type = reserved.get(t.value, 'ELSE')
+
+    global instruction_stack
+    global jump_stack
+    global temp_var_stack
+    global jumps
+    global struc_stack
+    instruction_stack.append(["go", "", "", len(jumps)])
+    jumps[-1]+=1
+    temp_var_stack.append(0)
+    jump_stack.append(len(jumps))
+    jumps.append(0)
+    struc_stack.append([0,0])
+    print("Inicio de ELSE")
+    return t
+
+def t_CLOSE_BRACES(t):
+    r'\}'
+    t.type = reserved.get(t.value, 'CLOSE_BRACES')
+
+    global instruction_stack
+    global jump_stack
+    global jumps
+    global struc_stack
+    print(struc_stack)
+    print(jump_stack)
+    print(jumps)
+    struc = struc_stack.pop()
+    if(struc[0] == 1):
+        instruction_stack.append(["go", "", "", len(jumps)])
+        jumps.append(struc[1])
+        jumps[jump_stack.pop()] = len(instruction_stack)
+    elif(struc[0] == 3):
+        instruction_stack.append(["=", "", "", len(temp_var_stack)])
+        instruction_stack.append(["==", True, len(temp_var_stack), len(jumps)])
+        temp_var_stack.append(0)
+        jumps.append(struc[1])
+    else:
+        jumps[jump_stack.pop()] = len(instruction_stack)
+    print("Final de estrucutura")
+    print(struc_stack)
+    print(jump_stack)
+    print(jumps)
+    return t
+
+def t_SEQUENCE(t):
+    r'([0-9]+:[0-9]+)'
+    t.type = reserved.get(t.value, 'SEQUENCE')
+
+    global instruction_stack
+    global jump_stack
+    global temp_var_stack
+    global jumps
+    instruction_stack.append(["=", t.value, "", len(temp_var_stack)])
+    struc_stack.append([1, len(instruction_stack)])
+    instruction_stack.append(["==", False, len(temp_var_stack), len(jumps)])
+    instruction_stack.append(["-", len(temp_var_stack), 1, len(temp_var_stack)])
+    temp_var_stack.append(0)
+    jump_stack.append(len(jumps))
+    jumps.append(0)
+    print("Inicio de FOR")
     return t
 
 def t_VAL(t):
@@ -102,16 +253,15 @@ def t_VAL(t):
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
+
+    global instruction_stack
+    if(struc_stack[-1][0] != 2):
+        instruction_stack.append(["=", "", "", t.value])
     return t
     
 def t_error(t):
     print("Caracter inválido.")
     t.lexer.skip(1)
-
-# def t_SEQUENCE(t):
-# 	r'([0-9]+:[0-9]+)'
-# 	t.type = reserved.get(t.value, 'SEQUENCE')
-# 	return t
 
 # digit            = r'([0-9])'
 # nondigit         = r'([_A-Za-z])'
@@ -178,18 +328,18 @@ def p_VAR(p):
     #         print("VAR: " + x)
     # global var_name
     # global curren_var
-    curren_var = p[1]
-    exp = expression_stack.pop()
-    if not  p[1] in var_name:
-        curren_var = p[1]
-        var_name.append(curren_var)
-        var_val.append(exp)
-        instruction_stack.append(["=", exp, "", curren_var ])
-        var_counter=+1
-    else:
-        var_val[var_name.index(curren_var)] = exp
-        instruction_stack.append(["=", exp, "", curren_var ])
-    print(exp_list)
+    # curren_var = p[1]
+    # exp = expression_stack.pop()
+    # if not  p[1] in var_name:
+    #     curren_var = p[1]
+    #     var_name.append(curren_var)
+    #     var_val.append(exp)
+    #     instruction_stack.append(["=", exp, "", curren_var ])
+    #     var_counter=+1
+    # else:
+    #     var_val[var_name.index(curren_var)] = exp
+    #     instruction_stack.append(["=", exp, "", curren_var ])
+    # print(exp_list)
     print("\tCORRECTO VAR")
 
 def p_INPUT(p):
@@ -203,7 +353,7 @@ def p_INPUT(p):
 def p_OUTPUT(p):
     #TODO agregar path expression
     '''
-    OUTPUT : PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    OUTPUT : PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     '''
     print("\tCORRECTO OUTPUT")
 
@@ -212,23 +362,23 @@ def p_IF_CONDITIONAL(p):
     IF_CONDITIONAL  : IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
                     | IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     '''
-    for x in p:
-        if x:
-            print("IF_cond: " + x)
-    global exp_list
-    global instruction_stack
-    global temp_counter
-    global expression_stack
-    if len(exp_list)>0:
-        expression_stack.append(exp_list.copy())
-        exp_list.clear()
-    instruction_stack.append(["=", expression_stack.pop(), "", temp_counter])
-    temp_counter+=1
-    instruction_stack.append(["==", 0, "", len(callback_stack)])
-    callback_stack.append(len(callback_stack))
+    # for x in p:
+    #     if x:
+    #         print("IF_cond: " + x)
+    # global exp_list
+    # global instruction_stack
+    # global temp_counter
+    # global expression_stack
+    # if len(exp_list)>0:
+    #     expression_stack.append(exp_list.copy())
+    #     exp_list.clear()
+    # instruction_stack.append(["=", expression_stack.pop(), "", temp_counter])
+    # temp_counter+=1
+    # instruction_stack.append(["==", 0, "", len(callback_stack)])
+    # callback_stack.append(len(callback_stack))
 
-    # var_name_temporal.
-    print("Finished IF: ", exp_list)
+    # # var_name_temporal.
+    # print("Finished IF: ", exp_list)
     print("\tCORRECTO IF")
 
 def p_ELSE_CONDITIONAL(p):
@@ -251,7 +401,7 @@ def p_DO_WHILE_LOOP(p):
 
 def p_FOR_LOOP(p):
     '''
-    FOR_LOOP : FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES 
+    FOR_LOOP : FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES 
     '''
     print("\tCORRECTO FOR")
 
@@ -291,7 +441,6 @@ def p_VALUE(p):
     global exp_list
     for x in p:
         if x:
-            print("Value------------>: " + x)
             exp_list.append(x)
     print("\tCORRECTO VALUE")
 
@@ -474,11 +623,13 @@ def programStatus():
     global instruction_stack
     global expression_stack
     global main_instruction_stack
+    global jumps
 
     print("Lista de expresiones: ", exp_list)
     print("Nombre de variables: ", var_name)
     print("Valor de variables: ", var_val)
     print("Instruction stack:")
+    instruction_stack = instruction_stack[0:int(len(instruction_stack)/2)]
     for instruction in instruction_stack:
         print(instruction)
     print("Expression stack:")
@@ -486,6 +637,7 @@ def programStatus():
         print(exp)
     for exp in main_instruction_stack:
         print(exp)
+    print(jumps)
 
 
 def reset():
@@ -519,6 +671,7 @@ exp_list = []
 exp_op = []
 var_counter = 0
 curren_var = ""
+func_names = []
 
 var_val_temporal = []
 temp_counter=0
@@ -529,7 +682,13 @@ temp_counter=0
 #######################################################################
 
 instruction_stack = []
+temp_var_stack = []
+jump_stack = []
+jumps = []
+for_jumps = []
+struc_stack = []
 temp_counter=0
+
 callback_stack=[]
 expression_stack = []
 main_instruction_stack = []

@@ -1,5 +1,9 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
+Unused terminals:
+
+    COLON
+
 Grammar
 
 Rule 0     S' -> MAIN_PROGRAM
@@ -19,13 +23,13 @@ Rule 13    VAR -> ID COMMA VAR
 Rule 14    VAR -> ID IS_VALUE EXP
 Rule 15    INPUT -> ID COMMA INPUT
 Rule 16    INPUT -> ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
-Rule 17    OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+Rule 17    OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
 Rule 18    IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
 Rule 19    IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 Rule 20    ELSE_CONDITIONAL -> ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
 Rule 21    WHILE_LOOP -> WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 Rule 22    DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
-Rule 23    FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+Rule 23    FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 Rule 24    FUNCTION -> FUNC ID OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 Rule 25    EXP -> VALUE
 Rule 26    VALUE -> EARITH
@@ -50,7 +54,7 @@ Terminals, with rules where they appear
 AND                  : 40
 CLOSE_BRACES         : 18 19 20 21 22 23 24
 CLOSE_PARENTHESIS    : 16 17 18 19 21 22 23 24 28
-COLON                : 23
+COLON                : 
 COMMA                : 13 15
 DIVOP                : 31
 DO                   : 22
@@ -60,7 +64,7 @@ FOR                  : 23
 FUNC                 : 24
 GE                   : 39
 GT                   : 37
-ID                   : 13 14 15 16 17 24
+ID                   : 13 14 15 16 24
 IF                   : 18 19
 IS_VALUE             : 14 16
 LE                   : 38
@@ -72,6 +76,7 @@ OPEN_PARENTHESIS     : 16 17 18 19 21 22 23 24 28
 OR                   : 41
 PRINT                : 17
 READ                 : 16
+SEQUENCE             : 23
 SUBOP                : 33
 SUMOP                : 32
 VAL                  : 29
@@ -84,7 +89,7 @@ DO_WHILE_LOOP        : 4
 EARITH               : 26
 ELOGIC               : 27
 ELSE_CONDITIONAL     : 6 18
-EXP                  : 14 18 19 21 22 23 23
+EXP                  : 14 17 18 19 21 22
 FOR_LOOP             : 3
 FUNCTION             : 11
 IF_CONDITIONAL       : 7
@@ -113,13 +118,13 @@ state 0
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -176,13 +181,13 @@ state 3
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -226,13 +231,13 @@ state 4
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -276,13 +281,13 @@ state 5
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -326,13 +331,13 @@ state 6
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -376,13 +381,13 @@ state 7
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -426,13 +431,13 @@ state 8
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -476,13 +481,13 @@ state 9
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -526,13 +531,13 @@ state 10
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -576,13 +581,13 @@ state 11
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -623,7 +628,7 @@ state 12
 
 state 13
 
-    (23) FOR_LOOP -> FOR . OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> FOR . OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 
     OPEN_PARENTHESIS shift and go to state 30
 
@@ -659,7 +664,7 @@ state 17
 
 state 18
 
-    (17) OUTPUT -> PRINT . OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> PRINT . OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
 
     OPEN_PARENTHESIS shift and go to state 35
 
@@ -756,32 +761,10 @@ state 29
 
 state 30
 
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS . EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (25) EXP -> . VALUE
-    (26) VALUE -> . EARITH
-    (27) VALUE -> . ELOGIC
-    (28) VALUE -> . OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS
-    (29) VALUE -> . VAL
-    (30) EARITH -> . VALUE MULOP VALUE
-    (31) EARITH -> . VALUE DIVOP VALUE
-    (32) EARITH -> . VALUE SUMOP VALUE
-    (33) EARITH -> . VALUE SUBOP VALUE
-    (34) ELOGIC -> . VALUE EQ VALUE
-    (35) ELOGIC -> . VALUE NE VALUE
-    (36) ELOGIC -> . VALUE LT VALUE
-    (37) ELOGIC -> . VALUE GT VALUE
-    (38) ELOGIC -> . VALUE LE VALUE
-    (39) ELOGIC -> . VALUE GE VALUE
-    (40) ELOGIC -> . VALUE AND VALUE
-    (41) ELOGIC -> . VALUE OR VALUE
+    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS . SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    SEQUENCE        shift and go to state 39
 
-    EXP                            shift and go to state 40
-    VALUE                          shift and go to state 41
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
 
 state 31
 
@@ -796,13 +779,13 @@ state 31
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -820,7 +803,7 @@ state 31
     FUNC            shift and go to state 20
     CLOSE_BRACES    reduce using rule 1 (empty -> .)
 
-    STRUCTURES                     shift and go to state 45
+    STRUCTURES                     shift and go to state 40
     FOR_LOOP                       shift and go to state 3
     DO_WHILE_LOOP                  shift and go to state 4
     WHILE_LOOP                     shift and go to state 5
@@ -853,13 +836,13 @@ state 32
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    EXP                            shift and go to state 46
-    VALUE                          shift and go to state 41
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    EXP                            shift and go to state 42
+    VALUE                          shift and go to state 43
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
 state 33
 
@@ -874,13 +857,13 @@ state 33
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -932,20 +915,42 @@ state 34
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
     EXP                            shift and go to state 48
-    VALUE                          shift and go to state 41
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 43
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
 state 35
 
-    (17) OUTPUT -> PRINT OPEN_PARENTHESIS . ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> PRINT OPEN_PARENTHESIS . EXP CLOSE_PARENTHESIS
+    (25) EXP -> . VALUE
+    (26) VALUE -> . EARITH
+    (27) VALUE -> . ELOGIC
+    (28) VALUE -> . OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS
+    (29) VALUE -> . VAL
+    (30) EARITH -> . VALUE MULOP VALUE
+    (31) EARITH -> . VALUE DIVOP VALUE
+    (32) EARITH -> . VALUE SUMOP VALUE
+    (33) EARITH -> . VALUE SUBOP VALUE
+    (34) ELOGIC -> . VALUE EQ VALUE
+    (35) ELOGIC -> . VALUE NE VALUE
+    (36) ELOGIC -> . VALUE LT VALUE
+    (37) ELOGIC -> . VALUE GT VALUE
+    (38) ELOGIC -> . VALUE LE VALUE
+    (39) ELOGIC -> . VALUE GE VALUE
+    (40) ELOGIC -> . VALUE AND VALUE
+    (41) ELOGIC -> . VALUE OR VALUE
 
-    ID              shift and go to state 49
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
+    EXP                            shift and go to state 49
+    VALUE                          shift and go to state 43
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
 state 36
 
@@ -984,13 +989,13 @@ state 37
     (41) ELOGIC -> . VALUE OR VALUE
 
     READ            shift and go to state 52
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
     EXP                            shift and go to state 53
-    VALUE                          shift and go to state 41
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 43
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
 state 38
 
@@ -1000,6 +1005,20 @@ state 38
 
 
 state 39
+
+    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE . CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+
+    CLOSE_PARENTHESIS shift and go to state 55
+
+
+state 40
+
+    (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES . CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
+
+    CLOSE_BRACES    shift and go to state 56
+
+
+state 41
 
     (28) VALUE -> OPEN_PARENTHESIS . VALUE CLOSE_PARENTHESIS
     (26) VALUE -> . EARITH
@@ -1019,21 +1038,21 @@ state 39
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 55
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 57
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 40
+state 42
 
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP . COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (21) WHILE_LOOP -> WHILE OPEN_PARENTHESIS EXP . CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
 
-    COLON           shift and go to state 56
+    CLOSE_PARENTHESIS shift and go to state 58
 
 
-state 41
+state 43
 
     (25) EXP -> VALUE .
     (30) EARITH -> VALUE . MULOP VALUE
@@ -1049,7 +1068,6 @@ state 41
     (40) ELOGIC -> VALUE . AND VALUE
     (41) ELOGIC -> VALUE . OR VALUE
 
-    COLON           reduce using rule 25 (EXP -> VALUE .)
     CLOSE_PARENTHESIS reduce using rule 25 (EXP -> VALUE .)
     FOR             reduce using rule 25 (EXP -> VALUE .)
     DO              reduce using rule 25 (EXP -> VALUE .)
@@ -1061,21 +1079,21 @@ state 41
     FUNC            reduce using rule 25 (EXP -> VALUE .)
     $end            reduce using rule 25 (EXP -> VALUE .)
     CLOSE_BRACES    reduce using rule 25 (EXP -> VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
 
 
-state 42
+state 44
 
     (26) VALUE -> EARITH .
 
@@ -1091,7 +1109,6 @@ state 42
     GE              reduce using rule 26 (VALUE -> EARITH .)
     AND             reduce using rule 26 (VALUE -> EARITH .)
     OR              reduce using rule 26 (VALUE -> EARITH .)
-    COLON           reduce using rule 26 (VALUE -> EARITH .)
     CLOSE_PARENTHESIS reduce using rule 26 (VALUE -> EARITH .)
     FOR             reduce using rule 26 (VALUE -> EARITH .)
     DO              reduce using rule 26 (VALUE -> EARITH .)
@@ -1105,7 +1122,7 @@ state 42
     CLOSE_BRACES    reduce using rule 26 (VALUE -> EARITH .)
 
 
-state 43
+state 45
 
     (27) VALUE -> ELOGIC .
 
@@ -1121,7 +1138,6 @@ state 43
     GE              reduce using rule 27 (VALUE -> ELOGIC .)
     AND             reduce using rule 27 (VALUE -> ELOGIC .)
     OR              reduce using rule 27 (VALUE -> ELOGIC .)
-    COLON           reduce using rule 27 (VALUE -> ELOGIC .)
     CLOSE_PARENTHESIS reduce using rule 27 (VALUE -> ELOGIC .)
     FOR             reduce using rule 27 (VALUE -> ELOGIC .)
     DO              reduce using rule 27 (VALUE -> ELOGIC .)
@@ -1135,7 +1151,7 @@ state 43
     CLOSE_BRACES    reduce using rule 27 (VALUE -> ELOGIC .)
 
 
-state 44
+state 46
 
     (29) VALUE -> VAL .
 
@@ -1151,7 +1167,6 @@ state 44
     GE              reduce using rule 29 (VALUE -> VAL .)
     AND             reduce using rule 29 (VALUE -> VAL .)
     OR              reduce using rule 29 (VALUE -> VAL .)
-    COLON           reduce using rule 29 (VALUE -> VAL .)
     CLOSE_PARENTHESIS reduce using rule 29 (VALUE -> VAL .)
     FOR             reduce using rule 29 (VALUE -> VAL .)
     DO              reduce using rule 29 (VALUE -> VAL .)
@@ -1163,20 +1178,6 @@ state 44
     FUNC            reduce using rule 29 (VALUE -> VAL .)
     $end            reduce using rule 29 (VALUE -> VAL .)
     CLOSE_BRACES    reduce using rule 29 (VALUE -> VAL .)
-
-
-state 45
-
-    (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES . CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
-
-    CLOSE_BRACES    shift and go to state 69
-
-
-state 46
-
-    (21) WHILE_LOOP -> WHILE OPEN_PARENTHESIS EXP . CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-
-    CLOSE_PARENTHESIS shift and go to state 70
 
 
 state 47
@@ -1196,7 +1197,7 @@ state 48
 
 state 49
 
-    (17) OUTPUT -> PRINT OPEN_PARENTHESIS ID . CLOSE_PARENTHESIS
+    (17) OUTPUT -> PRINT OPEN_PARENTHESIS EXP . CLOSE_PARENTHESIS
 
     CLOSE_PARENTHESIS shift and go to state 73
 
@@ -1265,6 +1266,20 @@ state 54
 
 state 55
 
+    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS . OPEN_BRACES STRUCTURES CLOSE_BRACES
+
+    OPEN_BRACES     shift and go to state 76
+
+
+state 56
+
+    (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
+
+    WHILE           shift and go to state 77
+
+
+state 57
+
     (28) VALUE -> OPEN_PARENTHESIS VALUE . CLOSE_PARENTHESIS
     (30) EARITH -> VALUE . MULOP VALUE
     (31) EARITH -> VALUE . DIVOP VALUE
@@ -1279,51 +1294,29 @@ state 55
     (40) ELOGIC -> VALUE . AND VALUE
     (41) ELOGIC -> VALUE . OR VALUE
 
-    CLOSE_PARENTHESIS shift and go to state 76
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
+    CLOSE_PARENTHESIS shift and go to state 78
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
 
 
-state 56
+state 58
 
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON . EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (25) EXP -> . VALUE
-    (26) VALUE -> . EARITH
-    (27) VALUE -> . ELOGIC
-    (28) VALUE -> . OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS
-    (29) VALUE -> . VAL
-    (30) EARITH -> . VALUE MULOP VALUE
-    (31) EARITH -> . VALUE DIVOP VALUE
-    (32) EARITH -> . VALUE SUMOP VALUE
-    (33) EARITH -> . VALUE SUBOP VALUE
-    (34) ELOGIC -> . VALUE EQ VALUE
-    (35) ELOGIC -> . VALUE NE VALUE
-    (36) ELOGIC -> . VALUE LT VALUE
-    (37) ELOGIC -> . VALUE GT VALUE
-    (38) ELOGIC -> . VALUE LE VALUE
-    (39) ELOGIC -> . VALUE GE VALUE
-    (40) ELOGIC -> . VALUE AND VALUE
-    (41) ELOGIC -> . VALUE OR VALUE
+    (21) WHILE_LOOP -> WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS . OPEN_BRACES STRUCTURES CLOSE_BRACES
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_BRACES     shift and go to state 79
 
-    EXP                            shift and go to state 77
-    VALUE                          shift and go to state 41
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
 
-state 57
+state 59
 
     (30) EARITH -> VALUE MULOP . VALUE
     (26) VALUE -> . EARITH
@@ -1343,14 +1336,14 @@ state 57
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 78
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 80
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 58
+state 60
 
     (31) EARITH -> VALUE DIVOP . VALUE
     (26) VALUE -> . EARITH
@@ -1370,14 +1363,14 @@ state 58
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 79
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 81
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 59
+state 61
 
     (32) EARITH -> VALUE SUMOP . VALUE
     (26) VALUE -> . EARITH
@@ -1397,14 +1390,14 @@ state 59
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 80
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 82
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 60
+state 62
 
     (33) EARITH -> VALUE SUBOP . VALUE
     (26) VALUE -> . EARITH
@@ -1424,14 +1417,14 @@ state 60
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 81
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 83
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 61
+state 63
 
     (34) ELOGIC -> VALUE EQ . VALUE
     (26) VALUE -> . EARITH
@@ -1451,14 +1444,14 @@ state 61
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 82
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 84
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 62
+state 64
 
     (35) ELOGIC -> VALUE NE . VALUE
     (26) VALUE -> . EARITH
@@ -1478,14 +1471,14 @@ state 62
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 83
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 85
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 63
+state 65
 
     (36) ELOGIC -> VALUE LT . VALUE
     (26) VALUE -> . EARITH
@@ -1505,14 +1498,14 @@ state 63
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 84
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 86
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 64
+state 66
 
     (37) ELOGIC -> VALUE GT . VALUE
     (26) VALUE -> . EARITH
@@ -1532,14 +1525,14 @@ state 64
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 85
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 87
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 65
+state 67
 
     (38) ELOGIC -> VALUE LE . VALUE
     (26) VALUE -> . EARITH
@@ -1559,14 +1552,14 @@ state 65
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 86
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 88
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 66
+state 68
 
     (39) ELOGIC -> VALUE GE . VALUE
     (26) VALUE -> . EARITH
@@ -1586,14 +1579,14 @@ state 66
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 87
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 89
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 67
+state 69
 
     (40) ELOGIC -> VALUE AND . VALUE
     (26) VALUE -> . EARITH
@@ -1613,14 +1606,14 @@ state 67
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 88
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 90
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
-state 68
+state 70
 
     (41) ELOGIC -> VALUE OR . VALUE
     (26) VALUE -> . EARITH
@@ -1640,26 +1633,12 @@ state 68
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
-    VALUE                          shift and go to state 89
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
-
-state 69
-
-    (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
-
-    WHILE           shift and go to state 90
-
-
-state 70
-
-    (21) WHILE_LOOP -> WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS . OPEN_BRACES STRUCTURES CLOSE_BRACES
-
-    OPEN_BRACES     shift and go to state 91
-
+    VALUE                          shift and go to state 91
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
 state 71
 
@@ -1687,18 +1666,18 @@ state 72
 
 state 73
 
-    (17) OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .
+    (17) OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .
 
-    FOR             reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    DO              reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    WHILE           reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    ELSE            reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    IF              reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    PRINT           reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    ID              reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    FUNC            reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    $end            reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
-    CLOSE_BRACES    reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS .)
+    FOR             reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    DO              reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    WHILE           reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    ELSE            reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    IF              reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    PRINT           reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    ID              reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    FUNC            reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    $end            reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
+    CLOSE_BRACES    reduce using rule 17 (OUTPUT -> PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
 
 
 state 74
@@ -1717,6 +1696,62 @@ state 75
 
 state 76
 
+    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES . STRUCTURES CLOSE_BRACES
+    (3) STRUCTURES -> . FOR_LOOP STRUCTURES
+    (4) STRUCTURES -> . DO_WHILE_LOOP STRUCTURES
+    (5) STRUCTURES -> . WHILE_LOOP STRUCTURES
+    (6) STRUCTURES -> . ELSE_CONDITIONAL STRUCTURES
+    (7) STRUCTURES -> . IF_CONDITIONAL STRUCTURES
+    (8) STRUCTURES -> . OUTPUT STRUCTURES
+    (9) STRUCTURES -> . INPUT STRUCTURES
+    (10) STRUCTURES -> . VAR STRUCTURES
+    (11) STRUCTURES -> . FUNCTION STRUCTURES
+    (12) STRUCTURES -> . empty
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
+    (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
+    (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
+    (15) INPUT -> . ID COMMA INPUT
+    (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
+    (13) VAR -> . ID COMMA VAR
+    (14) VAR -> . ID IS_VALUE EXP
+    (24) FUNCTION -> . FUNC ID OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (1) empty -> .
+
+    FOR             shift and go to state 13
+    DO              shift and go to state 14
+    WHILE           shift and go to state 15
+    ELSE            shift and go to state 16
+    IF              shift and go to state 17
+    PRINT           shift and go to state 18
+    ID              shift and go to state 19
+    FUNC            shift and go to state 20
+    CLOSE_BRACES    reduce using rule 1 (empty -> .)
+
+    STRUCTURES                     shift and go to state 95
+    FOR_LOOP                       shift and go to state 3
+    DO_WHILE_LOOP                  shift and go to state 4
+    WHILE_LOOP                     shift and go to state 5
+    ELSE_CONDITIONAL               shift and go to state 6
+    IF_CONDITIONAL                 shift and go to state 7
+    OUTPUT                         shift and go to state 8
+    INPUT                          shift and go to state 9
+    VAR                            shift and go to state 10
+    FUNCTION                       shift and go to state 11
+    empty                          shift and go to state 12
+
+state 77
+
+    (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE . OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
+
+    OPEN_PARENTHESIS shift and go to state 96
+
+
+state 78
+
     (28) VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .
 
     MULOP           reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
@@ -1731,7 +1766,6 @@ state 76
     GE              reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
     AND             reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
     OR              reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
-    COLON           reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
     CLOSE_PARENTHESIS reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
     FOR             reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
     DO              reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
@@ -1745,825 +1779,7 @@ state 76
     CLOSE_BRACES    reduce using rule 28 (VALUE -> OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS .)
 
 
-state 77
-
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP . CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-
-    CLOSE_PARENTHESIS shift and go to state 95
-
-
-state 78
-
-    (30) EARITH -> VALUE MULOP VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    FOR             reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    DO              reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    WHILE           reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    ELSE            reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    IF              reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    PRINT           reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    ID              reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    FUNC            reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    $end            reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    CLOSE_BRACES    reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! DIVOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! SUMOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! SUBOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! EQ              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! NE              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! LT              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! GT              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! LE              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! GE              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! AND             [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-  ! OR              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
-
-
 state 79
-
-    (31) EARITH -> VALUE DIVOP VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    FOR             reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    DO              reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    WHILE           reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    ELSE            reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    IF              reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    PRINT           reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    ID              reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    FUNC            reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    $end            reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    CLOSE_BRACES    reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! DIVOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! SUMOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! SUBOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! EQ              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! NE              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! LT              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! GT              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! LE              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! GE              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! AND             [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-  ! OR              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
-
-
-state 80
-
-    (32) EARITH -> VALUE SUMOP VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    FOR             reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    DO              reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    WHILE           reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    ELSE            reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    IF              reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    PRINT           reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    ID              reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    FUNC            reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    $end            reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    CLOSE_BRACES    reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! DIVOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! SUMOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! SUBOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! EQ              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! NE              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! LT              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! GT              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! LE              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! GE              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! AND             [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-  ! OR              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
-
-
-state 81
-
-    (33) EARITH -> VALUE SUBOP VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    FOR             reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    DO              reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    WHILE           reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    ELSE            reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    IF              reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    PRINT           reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    ID              reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    FUNC            reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    $end            reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    CLOSE_BRACES    reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! DIVOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! SUMOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! SUBOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! EQ              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! NE              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! LT              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! GT              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! LE              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! GE              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! AND             [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-  ! OR              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
-
-
-state 82
-
-    (34) ELOGIC -> VALUE EQ VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    FOR             reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    DO              reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    WHILE           reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    ELSE            reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    IF              reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    PRINT           reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    ID              reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    FUNC            reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    $end            reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    CLOSE_BRACES    reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! DIVOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! SUMOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! SUBOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! EQ              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! NE              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! LT              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! GT              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! LE              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! GE              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! AND             [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-  ! OR              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
-
-
-state 83
-
-    (35) ELOGIC -> VALUE NE VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    FOR             reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    DO              reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    WHILE           reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    ELSE            reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    IF              reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    PRINT           reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    ID              reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    FUNC            reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    $end            reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    CLOSE_BRACES    reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! DIVOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! SUMOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! SUBOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! EQ              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! NE              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! LT              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! GT              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! LE              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! GE              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! AND             [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-  ! OR              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
-
-
-state 84
-
-    (36) ELOGIC -> VALUE LT VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    FOR             reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    DO              reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    WHILE           reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    ELSE            reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    IF              reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    PRINT           reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    ID              reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    FUNC            reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    $end            reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    CLOSE_BRACES    reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! DIVOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! SUMOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! SUBOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! EQ              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! NE              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! LT              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! GT              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! LE              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! GE              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! AND             [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-  ! OR              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
-
-
-state 85
-
-    (37) ELOGIC -> VALUE GT VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    FOR             reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    DO              reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    WHILE           reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    ELSE            reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    IF              reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    PRINT           reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    ID              reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    FUNC            reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    $end            reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    CLOSE_BRACES    reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! DIVOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! SUMOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! SUBOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! EQ              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! NE              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! LT              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! GT              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! LE              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! GE              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! AND             [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-  ! OR              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
-
-
-state 86
-
-    (38) ELOGIC -> VALUE LE VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    FOR             reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    DO              reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    WHILE           reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    ELSE            reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    IF              reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    PRINT           reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    ID              reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    FUNC            reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    $end            reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    CLOSE_BRACES    reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! DIVOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! SUMOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! SUBOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! EQ              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! NE              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! LT              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! GT              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! LE              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! GE              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! AND             [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-  ! OR              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
-
-
-state 87
-
-    (39) ELOGIC -> VALUE GE VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    FOR             reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    DO              reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    WHILE           reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    ELSE            reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    IF              reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    PRINT           reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    ID              reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    FUNC            reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    $end            reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    CLOSE_BRACES    reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! DIVOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! SUMOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! SUBOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! EQ              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! NE              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! LT              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! GT              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! LE              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! GE              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! AND             [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-  ! OR              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
-
-
-state 88
-
-    (40) ELOGIC -> VALUE AND VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    FOR             reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    DO              reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    WHILE           reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    ELSE            reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    IF              reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    PRINT           reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    ID              reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    FUNC            reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    $end            reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    CLOSE_BRACES    reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! DIVOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! SUMOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! SUBOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! EQ              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! NE              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! LT              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! GT              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! LE              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! GE              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! AND             [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-  ! OR              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
-
-
-state 89
-
-    (41) ELOGIC -> VALUE OR VALUE .
-    (30) EARITH -> VALUE . MULOP VALUE
-    (31) EARITH -> VALUE . DIVOP VALUE
-    (32) EARITH -> VALUE . SUMOP VALUE
-    (33) EARITH -> VALUE . SUBOP VALUE
-    (34) ELOGIC -> VALUE . EQ VALUE
-    (35) ELOGIC -> VALUE . NE VALUE
-    (36) ELOGIC -> VALUE . LT VALUE
-    (37) ELOGIC -> VALUE . GT VALUE
-    (38) ELOGIC -> VALUE . LE VALUE
-    (39) ELOGIC -> VALUE . GE VALUE
-    (40) ELOGIC -> VALUE . AND VALUE
-    (41) ELOGIC -> VALUE . OR VALUE
-
-  ! shift/reduce conflict for MULOP resolved as shift
-  ! shift/reduce conflict for DIVOP resolved as shift
-  ! shift/reduce conflict for SUMOP resolved as shift
-  ! shift/reduce conflict for SUBOP resolved as shift
-  ! shift/reduce conflict for EQ resolved as shift
-  ! shift/reduce conflict for NE resolved as shift
-  ! shift/reduce conflict for LT resolved as shift
-  ! shift/reduce conflict for GT resolved as shift
-  ! shift/reduce conflict for LE resolved as shift
-  ! shift/reduce conflict for GE resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    COLON           reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    CLOSE_PARENTHESIS reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    FOR             reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    DO              reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    WHILE           reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    ELSE            reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    IF              reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    PRINT           reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    ID              reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    FUNC            reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    $end            reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    CLOSE_BRACES    reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
-    MULOP           shift and go to state 57
-    DIVOP           shift and go to state 58
-    SUMOP           shift and go to state 59
-    SUBOP           shift and go to state 60
-    EQ              shift and go to state 61
-    NE              shift and go to state 62
-    LT              shift and go to state 63
-    GT              shift and go to state 64
-    LE              shift and go to state 65
-    GE              shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-
-  ! MULOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! DIVOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! SUMOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! SUBOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! EQ              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! NE              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! LT              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! GT              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! LE              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! GE              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! AND             [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-  ! OR              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
-
-
-state 90
-
-    (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE . OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
-
-    OPEN_PARENTHESIS shift and go to state 96
-
-
-state 91
 
     (21) WHILE_LOOP -> WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES . STRUCTURES CLOSE_BRACES
     (3) STRUCTURES -> . FOR_LOOP STRUCTURES
@@ -2576,13 +1792,13 @@ state 91
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -2612,6 +1828,798 @@ state 91
     FUNCTION                       shift and go to state 11
     empty                          shift and go to state 12
 
+state 80
+
+    (30) EARITH -> VALUE MULOP VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    FOR             reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    DO              reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    WHILE           reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    ELSE            reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    IF              reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    PRINT           reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    ID              reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    FUNC            reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    $end            reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    CLOSE_BRACES    reduce using rule 30 (EARITH -> VALUE MULOP VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! DIVOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! SUMOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! SUBOP           [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! EQ              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! NE              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! LT              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! GT              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! LE              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! GE              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! AND             [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+  ! OR              [ reduce using rule 30 (EARITH -> VALUE MULOP VALUE .) ]
+
+
+state 81
+
+    (31) EARITH -> VALUE DIVOP VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    FOR             reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    DO              reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    WHILE           reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    ELSE            reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    IF              reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    PRINT           reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    ID              reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    FUNC            reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    $end            reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    CLOSE_BRACES    reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! DIVOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! SUMOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! SUBOP           [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! EQ              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! NE              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! LT              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! GT              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! LE              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! GE              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! AND             [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+  ! OR              [ reduce using rule 31 (EARITH -> VALUE DIVOP VALUE .) ]
+
+
+state 82
+
+    (32) EARITH -> VALUE SUMOP VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    FOR             reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    DO              reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    WHILE           reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    ELSE            reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    IF              reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    PRINT           reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    ID              reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    FUNC            reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    $end            reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    CLOSE_BRACES    reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! DIVOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! SUMOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! SUBOP           [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! EQ              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! NE              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! LT              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! GT              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! LE              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! GE              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! AND             [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+  ! OR              [ reduce using rule 32 (EARITH -> VALUE SUMOP VALUE .) ]
+
+
+state 83
+
+    (33) EARITH -> VALUE SUBOP VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    FOR             reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    DO              reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    WHILE           reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    ELSE            reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    IF              reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    PRINT           reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    ID              reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    FUNC            reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    $end            reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    CLOSE_BRACES    reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! DIVOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! SUMOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! SUBOP           [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! EQ              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! NE              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! LT              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! GT              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! LE              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! GE              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! AND             [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+  ! OR              [ reduce using rule 33 (EARITH -> VALUE SUBOP VALUE .) ]
+
+
+state 84
+
+    (34) ELOGIC -> VALUE EQ VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    FOR             reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    DO              reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    WHILE           reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    ELSE            reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    IF              reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    PRINT           reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    ID              reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    FUNC            reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    $end            reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    CLOSE_BRACES    reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! DIVOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! SUMOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! SUBOP           [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! EQ              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! NE              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! LT              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! GT              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! LE              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! GE              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! AND             [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+  ! OR              [ reduce using rule 34 (ELOGIC -> VALUE EQ VALUE .) ]
+
+
+state 85
+
+    (35) ELOGIC -> VALUE NE VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    FOR             reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    DO              reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    WHILE           reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    ELSE            reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    IF              reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    PRINT           reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    ID              reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    FUNC            reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    $end            reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    CLOSE_BRACES    reduce using rule 35 (ELOGIC -> VALUE NE VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! DIVOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! SUMOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! SUBOP           [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! EQ              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! NE              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! LT              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! GT              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! LE              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! GE              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! AND             [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+  ! OR              [ reduce using rule 35 (ELOGIC -> VALUE NE VALUE .) ]
+
+
+state 86
+
+    (36) ELOGIC -> VALUE LT VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    FOR             reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    DO              reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    WHILE           reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    ELSE            reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    IF              reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    PRINT           reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    ID              reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    FUNC            reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    $end            reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    CLOSE_BRACES    reduce using rule 36 (ELOGIC -> VALUE LT VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! DIVOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! SUMOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! SUBOP           [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! EQ              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! NE              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! LT              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! GT              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! LE              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! GE              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! AND             [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+  ! OR              [ reduce using rule 36 (ELOGIC -> VALUE LT VALUE .) ]
+
+
+state 87
+
+    (37) ELOGIC -> VALUE GT VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    FOR             reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    DO              reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    WHILE           reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    ELSE            reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    IF              reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    PRINT           reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    ID              reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    FUNC            reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    $end            reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    CLOSE_BRACES    reduce using rule 37 (ELOGIC -> VALUE GT VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! DIVOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! SUMOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! SUBOP           [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! EQ              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! NE              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! LT              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! GT              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! LE              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! GE              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! AND             [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+  ! OR              [ reduce using rule 37 (ELOGIC -> VALUE GT VALUE .) ]
+
+
+state 88
+
+    (38) ELOGIC -> VALUE LE VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    FOR             reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    DO              reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    WHILE           reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    ELSE            reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    IF              reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    PRINT           reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    ID              reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    FUNC            reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    $end            reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    CLOSE_BRACES    reduce using rule 38 (ELOGIC -> VALUE LE VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! DIVOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! SUMOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! SUBOP           [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! EQ              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! NE              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! LT              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! GT              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! LE              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! GE              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! AND             [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+  ! OR              [ reduce using rule 38 (ELOGIC -> VALUE LE VALUE .) ]
+
+
+state 89
+
+    (39) ELOGIC -> VALUE GE VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    FOR             reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    DO              reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    WHILE           reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    ELSE            reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    IF              reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    PRINT           reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    ID              reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    FUNC            reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    $end            reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    CLOSE_BRACES    reduce using rule 39 (ELOGIC -> VALUE GE VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! DIVOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! SUMOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! SUBOP           [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! EQ              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! NE              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! LT              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! GT              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! LE              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! GE              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! AND             [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+  ! OR              [ reduce using rule 39 (ELOGIC -> VALUE GE VALUE .) ]
+
+
+state 90
+
+    (40) ELOGIC -> VALUE AND VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    FOR             reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    DO              reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    WHILE           reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    ELSE            reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    IF              reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    PRINT           reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    ID              reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    FUNC            reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    $end            reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    CLOSE_BRACES    reduce using rule 40 (ELOGIC -> VALUE AND VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! DIVOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! SUMOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! SUBOP           [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! EQ              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! NE              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! LT              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! GT              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! LE              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! GE              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! AND             [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+  ! OR              [ reduce using rule 40 (ELOGIC -> VALUE AND VALUE .) ]
+
+
+state 91
+
+    (41) ELOGIC -> VALUE OR VALUE .
+    (30) EARITH -> VALUE . MULOP VALUE
+    (31) EARITH -> VALUE . DIVOP VALUE
+    (32) EARITH -> VALUE . SUMOP VALUE
+    (33) EARITH -> VALUE . SUBOP VALUE
+    (34) ELOGIC -> VALUE . EQ VALUE
+    (35) ELOGIC -> VALUE . NE VALUE
+    (36) ELOGIC -> VALUE . LT VALUE
+    (37) ELOGIC -> VALUE . GT VALUE
+    (38) ELOGIC -> VALUE . LE VALUE
+    (39) ELOGIC -> VALUE . GE VALUE
+    (40) ELOGIC -> VALUE . AND VALUE
+    (41) ELOGIC -> VALUE . OR VALUE
+
+  ! shift/reduce conflict for MULOP resolved as shift
+  ! shift/reduce conflict for DIVOP resolved as shift
+  ! shift/reduce conflict for SUMOP resolved as shift
+  ! shift/reduce conflict for SUBOP resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CLOSE_PARENTHESIS reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    FOR             reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    DO              reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    WHILE           reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    ELSE            reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    IF              reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    PRINT           reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    ID              reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    FUNC            reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    $end            reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    CLOSE_BRACES    reduce using rule 41 (ELOGIC -> VALUE OR VALUE .)
+    MULOP           shift and go to state 59
+    DIVOP           shift and go to state 60
+    SUMOP           shift and go to state 61
+    SUBOP           shift and go to state 62
+    EQ              shift and go to state 63
+    NE              shift and go to state 64
+    LT              shift and go to state 65
+    GT              shift and go to state 66
+    LE              shift and go to state 67
+    GE              shift and go to state 68
+    AND             shift and go to state 69
+    OR              shift and go to state 70
+
+  ! MULOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! DIVOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! SUMOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! SUBOP           [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! EQ              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! NE              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! LT              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! GT              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! LE              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! GE              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! AND             [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+  ! OR              [ reduce using rule 41 (ELOGIC -> VALUE OR VALUE .) ]
+
+
 state 92
 
     (18) IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES . STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
@@ -2626,13 +2634,13 @@ state 92
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -2691,13 +2699,13 @@ state 94
     (10) STRUCTURES -> . VAR STRUCTURES
     (11) STRUCTURES -> . FUNCTION STRUCTURES
     (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
     (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
     (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
+    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     (15) INPUT -> . ID COMMA INPUT
     (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
     (13) VAR -> . ID COMMA VAR
@@ -2729,9 +2737,9 @@ state 94
 
 state 95
 
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS . OPEN_BRACES STRUCTURES CLOSE_BRACES
+    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES . CLOSE_BRACES
 
-    OPEN_BRACES     shift and go to state 100
+    CLOSE_BRACES    shift and go to state 100
 
 
 state 96
@@ -2755,13 +2763,13 @@ state 96
     (40) ELOGIC -> . VALUE AND VALUE
     (41) ELOGIC -> . VALUE OR VALUE
 
-    OPEN_PARENTHESIS shift and go to state 39
-    VAL             shift and go to state 44
+    OPEN_PARENTHESIS shift and go to state 41
+    VAL             shift and go to state 46
 
     EXP                            shift and go to state 101
-    VALUE                          shift and go to state 41
-    EARITH                         shift and go to state 42
-    ELOGIC                         shift and go to state 43
+    VALUE                          shift and go to state 43
+    EARITH                         shift and go to state 44
+    ELOGIC                         shift and go to state 45
 
 state 97
 
@@ -2787,58 +2795,25 @@ state 99
 
 state 100
 
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES . STRUCTURES CLOSE_BRACES
-    (3) STRUCTURES -> . FOR_LOOP STRUCTURES
-    (4) STRUCTURES -> . DO_WHILE_LOOP STRUCTURES
-    (5) STRUCTURES -> . WHILE_LOOP STRUCTURES
-    (6) STRUCTURES -> . ELSE_CONDITIONAL STRUCTURES
-    (7) STRUCTURES -> . IF_CONDITIONAL STRUCTURES
-    (8) STRUCTURES -> . OUTPUT STRUCTURES
-    (9) STRUCTURES -> . INPUT STRUCTURES
-    (10) STRUCTURES -> . VAR STRUCTURES
-    (11) STRUCTURES -> . FUNCTION STRUCTURES
-    (12) STRUCTURES -> . empty
-    (23) FOR_LOOP -> . FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (22) DO_WHILE_LOOP -> . DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
-    (21) WHILE_LOOP -> . WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (20) ELSE_CONDITIONAL -> . ELSE OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (18) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
-    (19) IF_CONDITIONAL -> . IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (17) OUTPUT -> . PRINT OPEN_PARENTHESIS ID CLOSE_PARENTHESIS
-    (15) INPUT -> . ID COMMA INPUT
-    (16) INPUT -> . ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
-    (13) VAR -> . ID COMMA VAR
-    (14) VAR -> . ID IS_VALUE EXP
-    (24) FUNCTION -> . FUNC ID OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
-    (1) empty -> .
+    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .
 
-    FOR             shift and go to state 13
-    DO              shift and go to state 14
-    WHILE           shift and go to state 15
-    ELSE            shift and go to state 16
-    IF              shift and go to state 17
-    PRINT           shift and go to state 18
-    ID              shift and go to state 19
-    FUNC            shift and go to state 20
-    CLOSE_BRACES    reduce using rule 1 (empty -> .)
+    FOR             reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    DO              reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    WHILE           reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    ELSE            reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    IF              reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    PRINT           reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    ID              reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    FUNC            reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    $end            reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
+    CLOSE_BRACES    reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS SEQUENCE CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
 
-    STRUCTURES                     shift and go to state 105
-    FOR_LOOP                       shift and go to state 3
-    DO_WHILE_LOOP                  shift and go to state 4
-    WHILE_LOOP                     shift and go to state 5
-    ELSE_CONDITIONAL               shift and go to state 6
-    IF_CONDITIONAL                 shift and go to state 7
-    OUTPUT                         shift and go to state 8
-    INPUT                          shift and go to state 9
-    VAR                            shift and go to state 10
-    FUNCTION                       shift and go to state 11
-    empty                          shift and go to state 12
 
 state 101
 
     (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP . CLOSE_PARENTHESIS
 
-    CLOSE_PARENTHESIS shift and go to state 106
+    CLOSE_PARENTHESIS shift and go to state 105
 
 
 state 102
@@ -2877,7 +2852,7 @@ state 103
 
   ! ELSE            [ reduce using rule 19 (IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .) ]
 
-    ELSE_CONDITIONAL               shift and go to state 107
+    ELSE_CONDITIONAL               shift and go to state 106
 
 state 104
 
@@ -2897,13 +2872,6 @@ state 104
 
 state 105
 
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES . CLOSE_BRACES
-
-    CLOSE_BRACES    shift and go to state 108
-
-
-state 106
-
     (22) DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .
 
     FOR             reduce using rule 22 (DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
@@ -2918,7 +2886,7 @@ state 106
     CLOSE_BRACES    reduce using rule 22 (DO_WHILE_LOOP -> DO OPEN_BRACES STRUCTURES CLOSE_BRACES WHILE OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS .)
 
 
-state 107
+state 106
 
     (18) IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL .
 
@@ -2933,49 +2901,9 @@ state 107
     $end            reduce using rule 18 (IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL .)
     CLOSE_BRACES    reduce using rule 18 (IF_CONDITIONAL -> IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL .)
 
-
-state 108
-
-    (23) FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .
-
-    FOR             reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    DO              reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    WHILE           reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    ELSE            reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    IF              reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    PRINT           reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    ID              reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    FUNC            reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    $end            reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-    CLOSE_BRACES    reduce using rule 23 (FOR_LOOP -> FOR OPEN_PARENTHESIS EXP COLON EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES .)
-
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for MULOP in state 78 resolved as shift
-WARNING: shift/reduce conflict for DIVOP in state 78 resolved as shift
-WARNING: shift/reduce conflict for SUMOP in state 78 resolved as shift
-WARNING: shift/reduce conflict for SUBOP in state 78 resolved as shift
-WARNING: shift/reduce conflict for EQ in state 78 resolved as shift
-WARNING: shift/reduce conflict for NE in state 78 resolved as shift
-WARNING: shift/reduce conflict for LT in state 78 resolved as shift
-WARNING: shift/reduce conflict for GT in state 78 resolved as shift
-WARNING: shift/reduce conflict for LE in state 78 resolved as shift
-WARNING: shift/reduce conflict for GE in state 78 resolved as shift
-WARNING: shift/reduce conflict for AND in state 78 resolved as shift
-WARNING: shift/reduce conflict for OR in state 78 resolved as shift
-WARNING: shift/reduce conflict for MULOP in state 79 resolved as shift
-WARNING: shift/reduce conflict for DIVOP in state 79 resolved as shift
-WARNING: shift/reduce conflict for SUMOP in state 79 resolved as shift
-WARNING: shift/reduce conflict for SUBOP in state 79 resolved as shift
-WARNING: shift/reduce conflict for EQ in state 79 resolved as shift
-WARNING: shift/reduce conflict for NE in state 79 resolved as shift
-WARNING: shift/reduce conflict for LT in state 79 resolved as shift
-WARNING: shift/reduce conflict for GT in state 79 resolved as shift
-WARNING: shift/reduce conflict for LE in state 79 resolved as shift
-WARNING: shift/reduce conflict for GE in state 79 resolved as shift
-WARNING: shift/reduce conflict for AND in state 79 resolved as shift
-WARNING: shift/reduce conflict for OR in state 79 resolved as shift
 WARNING: shift/reduce conflict for MULOP in state 80 resolved as shift
 WARNING: shift/reduce conflict for DIVOP in state 80 resolved as shift
 WARNING: shift/reduce conflict for SUMOP in state 80 resolved as shift
@@ -3096,4 +3024,28 @@ WARNING: shift/reduce conflict for LE in state 89 resolved as shift
 WARNING: shift/reduce conflict for GE in state 89 resolved as shift
 WARNING: shift/reduce conflict for AND in state 89 resolved as shift
 WARNING: shift/reduce conflict for OR in state 89 resolved as shift
+WARNING: shift/reduce conflict for MULOP in state 90 resolved as shift
+WARNING: shift/reduce conflict for DIVOP in state 90 resolved as shift
+WARNING: shift/reduce conflict for SUMOP in state 90 resolved as shift
+WARNING: shift/reduce conflict for SUBOP in state 90 resolved as shift
+WARNING: shift/reduce conflict for EQ in state 90 resolved as shift
+WARNING: shift/reduce conflict for NE in state 90 resolved as shift
+WARNING: shift/reduce conflict for LT in state 90 resolved as shift
+WARNING: shift/reduce conflict for GT in state 90 resolved as shift
+WARNING: shift/reduce conflict for LE in state 90 resolved as shift
+WARNING: shift/reduce conflict for GE in state 90 resolved as shift
+WARNING: shift/reduce conflict for AND in state 90 resolved as shift
+WARNING: shift/reduce conflict for OR in state 90 resolved as shift
+WARNING: shift/reduce conflict for MULOP in state 91 resolved as shift
+WARNING: shift/reduce conflict for DIVOP in state 91 resolved as shift
+WARNING: shift/reduce conflict for SUMOP in state 91 resolved as shift
+WARNING: shift/reduce conflict for SUBOP in state 91 resolved as shift
+WARNING: shift/reduce conflict for EQ in state 91 resolved as shift
+WARNING: shift/reduce conflict for NE in state 91 resolved as shift
+WARNING: shift/reduce conflict for LT in state 91 resolved as shift
+WARNING: shift/reduce conflict for GT in state 91 resolved as shift
+WARNING: shift/reduce conflict for LE in state 91 resolved as shift
+WARNING: shift/reduce conflict for GE in state 91 resolved as shift
+WARNING: shift/reduce conflict for AND in state 91 resolved as shift
+WARNING: shift/reduce conflict for OR in state 91 resolved as shift
 WARNING: shift/reduce conflict for ELSE in state 103 resolved as shift
