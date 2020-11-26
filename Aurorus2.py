@@ -8,29 +8,30 @@
 
 import ply.lex as lex
 import ply.yacc as yacc
+from executor import Executor
 import sys
 
 reserved = {
-    # 'read' : 'READ',
-    # 'print' : 'PRINT',
-    # 'if' : 'IF',
-    # 'else' : 'ELSE',
-    # 'while' : 'WHILE',
-    # 'do' : 'DO',
-    # 'for' : 'FOR',
-    # 'func' : 'FUNC'
+    'read' : 'READ',
+    'print' : 'PRINT',
+    'if' : 'IF',
+    'else' : 'ELSE',
+    'while' : 'WHILE',
+    'do' : 'DO',
+    'for' : 'FOR',
+    'func' : 'FUNC',
+    '<-' : 'IS_VALUE'
 }
 
 tokens = [
     'COMMA',
-    'IS_VALUE',
     'OPEN_PARENTHESIS',
     'CLOSE_PARENTHESIS',
     'OPEN_BRACES',
     'CLOSE_BRACES',
     'ID',
     'VAL',
-    'COLON',
+    'MATRIX',
     'SUMOP',
     'MULOP',
     'SUBOP',
@@ -43,29 +44,23 @@ tokens = [
     'GE',
     'OR',
     'AND',
-    'IF',
-    'ELSE',
     'SEQUENCE',
-    'FOR',
-    'WHILE',
-    'FUNC',
-    'DO',
-    'READ',
-    'PRINT'
+    'MATRIX_VAL',
+    'STRING'
 ] + list(reserved.values())
 
-t_ignore = r' \n\t'
+t_ignore = r' \n'
  # RegEx para tokens
 # t_ENDL = r'\n'
-t_COMMA = r'\,'
-t_IS_VALUE = r'<-'
-# t_READ = r'read'
+# # t_READ = r'read'
+# t_OPEN_PARENTHESIS  = r'\('
+# t_CLOSE_PARENTHESIS  = r'\)'
+# # t_PRINT = r'print'
+# # t_IF = r'if'
+
+# t_OPEN_BRACES = r'\{'
 t_OPEN_PARENTHESIS  = r'\('
 t_CLOSE_PARENTHESIS  = r'\)'
-# t_PRINT = r'print'
-# t_IF = r'if'
-t_OPEN_BRACES = r'\{'
-t_COLON = r'\:'
 t_SUMOP = r'\+'
 t_MULOP = r'\*'
 t_SUBOP = r'\-'
@@ -78,6 +73,9 @@ t_LE = r'<='
 t_GE = r'>='
 t_AND = r'&&'
 t_OR = r'°°'
+t_COMMA = r'\,'
+
+# t_IS_VALUE = r'<-'
 
 # t_ELSE = r'else'
 # t_WHILE = r'while'
@@ -96,8 +94,19 @@ def t_READ(t):
     t.type = reserved.get(t.value, 'READ')
 
     global instruction_stack
-
-    instruction_stack.append(["read", "", "", ""])
+    global var_stack_helper
+    index = len(instruction_stack)-1
+    print("READ instruction stack")
+    print(instruction_stack)
+    while(instruction_stack[index][1] != "0"):
+        index-=1
+    instruction_stack.insert(index, ["read", "", "", len(temp_var_stack)])
+    index+=1
+    while(index < len(instruction_stack)):
+        instruction_stack[index][1] = len(temp_var_stack)
+        index+=1
+    temp_var_stack.append(0)
+    var_stack_helper.clear()
     print("READ code")
     return t
 
@@ -108,6 +117,8 @@ def t_PRINT(t):
     global instruction_stack
 
     instruction_stack.append(["print", "", "", ""])
+    global var_stack_helper
+    var_stack_helper.clear()
     print("PRINT code")
     return t
 
@@ -120,13 +131,14 @@ def t_FUNC(t):
     global jump_stack
     global jumps
 
-    func_names.append(("", len(instruction_stack)))
     instruction_stack.append(["go", "", "", len(jumps)])
-    func_names.append(("", len(instruction_stack)))
+    func_jumps.append(len(instruction_stack))
     jump_stack.append(len(jumps))
     jumps.append(0)
     struc_stack.append([2,0])
-
+    global var_stack_helper
+    var_stack_helper.clear()
+    print(func_jumps)
     print("Inicio de FUNC")
     return t
 
@@ -136,6 +148,8 @@ def t_DO(t):
 
     global struc_stack
     struc_stack.append([3,len(instruction_stack)])
+    global var_stack_helper
+    var_stack_helper.clear()
     print("Inicio de DO")
     return t
 
@@ -155,11 +169,15 @@ def t_WHILE(t):
         jump_stack.append(len(jumps))
         jumps.append(0)
         print("Inicio de WHILE")
+        global var_stack_helper
+        var_stack_helper.clear()
     return t
 
 def t_FOR(t):
     r'for'
     t.type = reserved.get(t.value, 'FOR')
+    global var_stack_helper
+    var_stack_helper.clear()
     print("Inicio de FOR")
     return t
 
@@ -178,6 +196,8 @@ def t_IF(t):
     jump_stack.append(len(jumps))
     jumps.append(0)
     struc_stack.append([0,0])
+    global var_stack_helper
+    var_stack_helper.clear()
     print("Inicio de IF")
     return t
 
@@ -196,6 +216,8 @@ def t_ELSE(t):
     jump_stack.append(len(jumps))
     jumps.append(0)
     struc_stack.append([0,0])
+    global var_stack_helper
+    var_stack_helper.clear()
     print("Inicio de ELSE")
     return t
 
@@ -221,11 +243,22 @@ def t_CLOSE_BRACES(t):
         temp_var_stack.append(0)
         jumps.append(struc[1])
     else:
+        instruction_stack.append(["return", "", "", ""])
         jumps[jump_stack.pop()] = len(instruction_stack)
+    global var_stack_helper
+    var_stack_helper.clear()
     print("Final de estrucutura")
     print(struc_stack)
     print(jump_stack)
     print(jumps)
+    return t
+
+def t_OPEN_BRACES(t):
+    r'\{'
+    t.type = reserved.get(t.value, 'OPEN_BRACES')
+
+    global var_stack_helper
+    var_stack_helper.clear()
     return t
 
 def t_SEQUENCE(t):
@@ -243,21 +276,65 @@ def t_SEQUENCE(t):
     temp_var_stack.append(0)
     jump_stack.append(len(jumps))
     jumps.append(0)
+    global var_stack_helper
+    var_stack_helper.clear()
     print("Inicio de FOR")
     return t
 
-def t_VAL(t):
-    r'([0-9]+)'
-    t.type = reserved.get(t.value, 'VAL')
+def t_IS_VALUE(t):
+    r'<-'
+    t.type = reserved.get(t.value, 'IS_VALUE')
+
+    global var_stack_helper
+    global instruction_stack
+    print(var_stack_helper)
+    for index, var in enumerate(var_stack_helper):
+        instruction_stack.append(["=", str(index), "", var])
+    var_stack_helper.clear()
+    return t
+    print("Assigned to")
+
+def t_MATRIX_VAL(t):
+    r'([a-zA-Z_][a-zA-Z0-9_]*(\[[0-9]+])+)'
+    t.type = reserved.get(t.value, 'MATRIX_VAL')
+    print("matrix VAL")
+    return t
+
+def t_MATRIX(t):
+    r'(\[[0-9]+([:][0-9]+)+])'
+    t.type = reserved.get(t.value, 'MATRIX')
+
+    # global var_stack_helper
+    # var_stack_helper.append(t.value)
+    print("iniciación matrix")
+    return t
+
+def t_STRING(t):
+    r'"[a-zA-Z0-9[\], +*/~?¿-]+"'
+    t.type = reserved.get(t.value, 'STRING')
     return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
 
-    global instruction_stack
-    if (struc_stack[-1][0] != 2):
-        instruction_stack.append(["=", "", "", t.value])
+    global var_stack_helper
+    global struc_stack
+    global func_dic
+    global func_jumps
+    var_stack_helper.append(t.value)
+    if len(struc_stack)>1:
+        if len(struc_stack) and struc_stack[1][0] == 2 and not var_stack_helper[0] in func_dic:
+            func_dic[var_stack_helper[0]] = func_jumps.pop()
+            var_stack_helper.clear()
+        elif var_stack_helper[0] in func_dic:
+                instruction_stack.append(["func_go", "", "", func_dic[var_stack_helper[0]]])
+                var_stack_helper.clear()
+    return t
+
+def t_VAL(t):
+    r'([0-9]+)'
+    t.type = reserved.get(t.value, 'VAL')
     return t
     
 def t_error(t):
@@ -266,8 +343,81 @@ def t_error(t):
 
 # digit            = r'([0-9])'
 # nondigit         = r'([_A-Za-z])'
-# identifier       = r'(' + nondigit + r'(' + digit + r'|' + nondigit + r')*)'  
+# identifier       = r'(' + nondigit + r'(' + digit + r'|' + nondigit + r')*)'
 
+# t_IS_VALUE = r'<-'
+
+# def t_LE(t):
+#     r'<='
+#     t.type = reserved.get(t.value, 'LE')
+#     return t
+
+# def t_COMMA(t):
+#     r'\,'
+#     t.type = reserved.get(t.value, 'COMMA')
+#     return t
+
+# def t_CLOSE_PARENTHESIS(t):
+#     r'\)'
+#     t.type = reserved.get(t.value, 'CLOSE_PARENTHESIS')
+
+#     lexer
+#     return t
+
+# def t_SUMOP(t):
+#     r'\+'
+#     t.type = reserved.get(t.value, 'SUMOP')
+#     return t
+
+# def t_MULOP(t):
+#     r'\*'
+#     t.type = reserved.get(t.value, 'MULOP')
+#     return t
+
+# def t_SUBOP(t):
+#     r'\-'
+#     t.type = reserved.get(t.value, 'SUBOP')
+#     return t
+
+# def t_DIVOP(t):
+#     r'\/'
+#     t.type = reserved.get(t.value, 'DIVOP')
+#     return t
+
+# def t_EQ(t):
+#     r'\='
+#     t.type = reserved.get(t.value, 'EQ')
+#     return t
+
+# def t_NE(t):
+#     r'!='
+#     t.type = reserved.get(t.value, 'NE')
+#     return t
+
+# def t_LT(t):
+#     r'\<'
+#     t.type = reserved.get(t.value, 'LT')
+#     return t
+
+# def t_GT(t):
+#     r'\>'
+#     t.type = reserved.get(t.value, 'GT')
+#     return t
+
+# def t_GE(t):
+#     r'>='
+#     t.type = reserved.get(t.value, 'GE')
+#     return t
+
+# def t_AND(t):
+#     r'&&'
+#     t.type = reserved.get(t.value, 'AND')
+#     return t
+
+# def t_OR(t):
+#     r'°°'
+#     t.type = reserved.get(t.value, 'OR')
+#     return t
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Empty/Error
@@ -303,48 +453,26 @@ def p_STRUCTURES(p):
                 | INPUT STRUCTURES
                 | VAR STRUCTURES
                 | FUNCTION STRUCTURES
+                | FUNC_CALL STRUCTURES
                 | empty
     '''
-
-    # global instruction_stack
-    # global main_instruction_stack
-    # main_instruction_stack.insert(0, instruction_stack.copy())
-    # instruction_stack.clear()
     print("\tCORRECTO STRUCTURES")
 
 def p_VAR(p):
     '''
     VAR : ID COMMA VAR
         | ID IS_VALUE EXP
+        | ID IS_VALUE MATRIX
     '''
-    global var_val
-    global exp_list
-    global var_name
-    global curren_var
-    global instruction_stack
-    global expression_stack
-    # for x in p:
-    #     print("hey")
-    #     if x:
-    #         print("VAR: " + x)
-    # global var_name
-    # global curren_var
-    # curren_var = p[1]
-    # exp = expression_stack.pop()
-    # if not  p[1] in var_name:
-    #     curren_var = p[1]
-    #     var_name.append(curren_var)
-    #     var_val.append(exp)
-    #     instruction_stack.append(["=", exp, "", curren_var ])
-    #     var_counter=+1
-    # else:
-    #     var_val[var_name.index(curren_var)] = exp
-    #     instruction_stack.append(["=", exp, "", curren_var ])
-    # print(exp_list)
+    for x in p:
+        print("hey")
+        if x and '[' in x:
+            print("VAR: " + x)
+            global expression_stack
+            expression_stack.append([x])
     print("\tCORRECTO VAR")
 
 def p_INPUT(p):
-    #TODO agregar path expression
     '''
     INPUT 	: ID COMMA INPUT
             | ID IS_VALUE READ OPEN_PARENTHESIS CLOSE_PARENTHESIS
@@ -352,9 +480,8 @@ def p_INPUT(p):
     print("\tCORRECTO INPUT")
 
 def p_OUTPUT(p):
-    #TODO agregar path expression
     '''
-    OUTPUT : PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
+    OUTPUT  : PRINT OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS
     '''
     print("\tCORRECTO OUTPUT")
 
@@ -363,23 +490,6 @@ def p_IF_CONDITIONAL(p):
     IF_CONDITIONAL  : IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES ELSE_CONDITIONAL
                     | IF OPEN_PARENTHESIS EXP CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES
     '''
-    # for x in p:
-    #     if x:
-    #         print("IF_cond: " + x)
-    # global exp_list
-    # global instruction_stack
-    # global temp_counter
-    # global expression_stack
-    # if len(exp_list)>0:
-    #     expression_stack.append(exp_list.copy())
-    #     exp_list.clear()
-    # instruction_stack.append(["=", expression_stack.pop(), "", temp_counter])
-    # temp_counter+=1
-    # instruction_stack.append(["==", 0, "", len(callback_stack)])
-    # callback_stack.append(len(callback_stack))
-
-    # # var_name_temporal.
-    # print("Finished IF: ", exp_list)
     print("\tCORRECTO IF")
 
 def p_ELSE_CONDITIONAL(p):
@@ -408,9 +518,29 @@ def p_FOR_LOOP(p):
 
 def p_FUNCTION(p):
     '''
-    FUNCTION : FUNC ID OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_BRACES STRUCTURES CLOSE_BRACES 
+    FUNCTION : FUNC ID OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_BRACES NON_FUNCTION CLOSE_BRACES 
     '''
     print("\tCORRECTO FUNC")
+
+def p_NON_FUNCTION(p):
+    '''
+    NON_FUNCTION    : FOR_LOOP NON_FUNCTION
+                    | DO_WHILE_LOOP NON_FUNCTION
+                    | WHILE_LOOP NON_FUNCTION
+                    | ELSE_CONDITIONAL NON_FUNCTION
+                    | IF_CONDITIONAL NON_FUNCTION
+                    | OUTPUT NON_FUNCTION
+                    | INPUT NON_FUNCTION
+                    | VAR NON_FUNCTION
+                    | FUNC_CALL NON_FUNCTION
+                    | empty
+    '''
+
+def p_FUNC_CALL(p):
+    '''
+    FUNC_CALL   : ID OPEN_PARENTHESIS CLOSE_PARENTHESIS
+    '''
+    print("\tCORRECTO FUNC_CALL")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Expresiones
@@ -418,11 +548,11 @@ def p_FUNCTION(p):
 def p_EXP(p):
     '''
     EXP	: VALUE
-    '''
-    
+    ''' 
     global expression_stack
     global exp_list
     expression_stack.append(exp_list.copy())
+    print(expression_stack)
     exp_list.clear()
     print("\tCORRECTO EXP")
 
@@ -439,6 +569,8 @@ def p_VALUE(p):
             | OPEN_PARENTHESIS VALUE CLOSE_PARENTHESIS
             | VAL
             | ID
+            | MATRIX_VAL
+            | STRING
     '''
     global exp_list
     for x in p:
@@ -626,21 +758,19 @@ def programStatus():
     global expression_stack
     global main_instruction_stack
     global jumps
+    global func_dic
 
     print("Lista de expresiones: ", exp_list)
     print("Nombre de variables: ", var_name)
     print("Valor de variables: ", var_val)
     print("Instruction stack:")
-    instruction_stack = instruction_stack[0:int(len(instruction_stack)/2)]
     for instruction in instruction_stack:
         print(instruction)
     print("Expression stack:")
     for exp in expression_stack:
         print(exp)
-    for exp in main_instruction_stack:
-        print(exp)
-    print(jumps)
-
+    print("Jumps: ", jumps)
+    print("Functions: ", func_dic)
 
 def reset():
     global exp_list
@@ -649,19 +779,18 @@ def reset():
     global instruction_stack
     global expression_stack
     global main_instruction_stack
+    global jumps
+    global func_dic
 
     exp_list.clear()
     var_name.clear()
     var_val.clear()
     instruction_stack.clear()
     expression_stack.clear()
-    main_instruction_stack.clear()
+    jumps.clear()
+    func_dic.clear()
 
 #######################################################################
-
-
-
-
 #######################################################################
 
 #lexer = lex.lex()
@@ -673,7 +802,9 @@ exp_list = []
 exp_op = []
 var_counter = 0
 curren_var = ""
-func_names = []
+func_jumps = []
+func_dic = {}
+var_stack_helper = []
 
 var_val_temporal = []
 temp_counter=0
@@ -684,33 +815,57 @@ temp_counter=0
 #######################################################################
 
 instruction_stack = []
+expression_stack = []
 temp_var_stack = []
 jump_stack = []
 jumps = []
 for_jumps = []
 struc_stack = [(0,0)]
-temp_counter=0
-
-callback_stack=[]
-expression_stack = []
-main_instruction_stack = []
 
 #######################################################################
 
-while True:
-    try:
-        print("Write the code instruction here:")
-        s = input()
-        if(s == 'x'):
+def main():
+    while True:
+        try:
+            print("Write the code instruction here:")
+            s = input()
+            if(s == 'x'):
+                break
+        except EOFError:
             break
-    except EOFError:
-        break
-    lexer.input(s)
-    for tok in lexer:
-        print(tok)
-    parser.parse(s)
-    programStatus()
-    # print("Respuesta: ", parse_subops(exp_list))
-    # print(exp_op)
-    # exp_op.clear()
-    reset()
+        # file = open("code.txt")
+        # line = file.read().replace("\n", " ")
+        lexer.input(s)
+        # file.close()
+        for tok in lexer:
+            print(tok)
+        parser.parse(s)
+        global instruction_stack
+        global expression_stack
+        global jumps
+        instruction_stack = instruction_stack[0:int(len(instruction_stack)/2)]
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        programStatus()
+        index = 0
+        while index < len(instruction_stack):
+            operation = instruction_stack[index][0]
+            print(instruction_stack[index])
+            if(operation == "=" and isinstance(instruction_stack[index][1], str)):
+                val = expression_stack.pop(0)
+                instruction_stack[index][1] = val
+                index+=1
+                while(index < len(instruction_stack) and isinstance(instruction_stack[index][1], str) and instruction_stack[index][0] == "=" and instruction_stack[index][1] != '0'):
+                    instruction_stack[index][1] = val
+                    index+=1
+                index-=1
+            elif(operation == "print"):
+                instruction_stack[index][1] = expression_stack.pop(0)
+            index+=1
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        programStatus()
+        exec = Executor()
+        exec.execute(instruction_stack, jumps, func_dic)
+        reset()
+
+if __name__ == "__main__":
+    main()
