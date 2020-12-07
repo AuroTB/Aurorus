@@ -1,0 +1,30 @@
+func calculateHipo(){
+    counter<-1
+    helper<-0
+    for(0:7){
+        helper<-helper+(var/counter)
+        var<-var*var
+        counter<-counter*(counter+1)
+    }
+    print("The result is:")
+    print(helper)
+}
+
+x<-0
+print("Do you want me to calculate the hipothenuse of a triangle?")
+print("1. Yes")
+print("2. No")
+x <- read()
+while(x != 2){
+    print("Triangle base:")
+    base <- read()
+    print("Triangle height:")
+    height <- read()
+    var<-(base*base+height*height)-1
+    calculateHipo()
+    print("Do you want me to calculate the hipothenuse of a triangle again?")
+    print("1. Yes")
+    print("2. No")
+    x <- read()
+}
+print("Program finished!")

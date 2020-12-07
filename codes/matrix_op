@@ -1,0 +1,155 @@
+mat1, mat2<-[5:5]
+f1, f2, c1, c2<-5
+
+func desplegar_menu(){
+    print("Operaciones disponibles:")
+    print("1. Inicializar matrices")
+    print("2. Multiplicar matrices")
+    print("3. Sumar matrices")
+    print("4. Mostrar matrices")
+    print("0. Salir")
+}
+
+func inicializar_matrices(){
+    print("Filas de matriz 1: ")
+    f1<-read()
+    while(f1<1 % f1>5){
+        print("Inserte una dimension valida: ")
+        f1<-read()
+    }
+    print("Columnas de matriz 1: ")
+    c1<-read()
+    while(c1<1 % c1>5){
+        print("Inserte una dimension valida: ")
+        c1<-read()
+    }
+    mat1<-[f1:c1]
+    print("Inserte ")
+    print(f1*c1)
+    print(" numeros")
+    r, c<-0
+    for(0:f1){
+        c<-0
+        for(0:c1){
+            mat1[c][r]<-read()
+            c<-c+1
+        }
+        r<-r+1
+    }
+    print("Matriz 1:")
+    print(mat1)
+
+    print("Filas de matriz 2: ")
+    f2<-read()
+    while(f2<1 % f2>5){
+        print("Inserte una dimension valida: ")
+        f2<-read()
+    }
+    print("Columnas de matriz 2: ")
+    c2<-read()
+    while(c2<1 % c2>5){
+        print("Inserte una dimension valida: ")
+        c2<-read()
+    }
+    mat2<-[f2:c2]
+    print("Inserte ")
+    print(f2*c2)
+    print(" numeros")
+    r, c<-0
+    for(0:f2){
+        c<-0
+        for(0:c2){
+            mat2[c][r]<-read()
+            c<-c+1
+        }
+        r<-r+1
+    }
+    print("Matriz 2:")
+    print(mat2)
+}
+
+func sumar_matrices(){
+    mat3<-[f1:c1]
+    row, col<-0
+    for(0:f1){
+        col<-0
+        for(0:c1){
+            mat3[col][row]<- mat1[row][col] + mat2[row][col]
+            col<-col+1
+        }
+        row<-row+1
+    }
+}
+
+func multiplicar_matrices(){
+    mat3<-[f1:c2]
+    row, col<-0
+    for(0:f1){
+        col<-0
+        for(0:c2){
+            counter<-0
+            for(0:c1){
+                mat3[col][row]<-mat3[row][col]+mat1[row][counter]*mat2[counter][col]
+                counter<-counter+1
+            }
+            col<-col+1
+        }
+        row<-row+1
+    }
+}
+
+func desplegar_resultado(){
+    print("Resultado:")
+    print(mat3)
+}
+
+func validar_matrices(){
+    if(validacion = 0){
+        if(f1!=c2 % f2!=c1){
+            print("No se pueden multiplicar las matrices")
+        }else{
+            multiplicar_matrices()
+            desplegar_resultado()
+        }
+    }else{
+        if(f1!=f2 % c2!=c1){
+            print("No se pueden sumar las matrices")
+        }else{
+            sumar_matrices()
+            desplegar_resultado()
+        }
+    }
+}
+
+func mostrar_matrices(){
+    print("Matriz 1")
+    print(mat1)
+    print("Matriz 2")
+    print(mat2)
+}
+
+func main(){
+    print("Bienvenido al programa 1")
+    x <- 1
+    while(x != 0){
+        desplegar_menu()
+        x<-read()
+        if(x = 1){
+            inicializar_matrices()
+        }
+        if(x = 2){
+            validacion<-0
+            validar_matrices()
+        }
+        if(x = 3){
+            validacion<-1
+            validar_matrices()
+        }
+        if(x = 4){
+            mostrar_matrices()
+        }
+    }
+    print("Programa finalizado")
+}
+
+main()

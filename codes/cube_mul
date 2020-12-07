@@ -1,0 +1,49 @@
+func inicializar_cubo(){
+    print("Dimensiones del cubo: ")
+    d<-read()
+    while(d<1){
+        print("Inserte una dimension valida: ")
+        d<-read()
+    }
+    cubo<-[d:d:d]
+    print("Inserte ")
+    print(d*d*d)
+    print(" numeros")
+    d1, d2, d3<-0
+    for(0:d){
+        d2<-0
+        for(0:d){
+            d3<-0
+            for(0:d){
+                cubo[d3][d2][d1]<-read()
+                d3<-d3+1
+            }
+            d2<-d2+1
+        }
+        d1<-d1+1
+    }
+    print("Cubo:")
+    print(cubo)
+}
+
+func multiplicar_cubo_x2(){
+    d1, d2, d3<-0
+    for(0:d){
+        d2<-0
+        for(0:d){
+            d3<-0
+            for(0:d){
+                cubo[d3][d2][d1]<-cubo[d1][d2][d3] * 2
+                d3<-d3+1
+            }
+            d2<-d2+1
+        }
+        d1<-d1+1
+    }
+    print("Cubo multiplicado por 2:")
+    print(cubo)
+}
+
+print("Bienvenido al programa 4")
+inicializar_cubo()
+multiplicar_cubo_x2()
