@@ -1,0 +1,49 @@
+func obtener_vector(){
+    print("Bienvenido al programa de SORT")
+    print("Cuantos numeros quiere ordenar?")
+    x<-read()
+    while(x<0 % x>10){
+        if(x<0){
+            print("Inserte un numero positivo, por favor")
+        }
+        if(x>10){
+            print("El maximo son 10 numeros, por favor inserte un numero valido")
+        }
+        x<-read()
+    }
+    vector<-[x]
+    print("Ingrese")
+    print(x)
+    print("numeros")
+    iterador<-0
+    for(0:x){
+        vector[iterador]<-read()
+        iterador<-iterador+1
+    }
+    print("Vector a ordenar:")
+    print(vector)
+}
+
+func sort_vector(){
+    y, z<-0
+    for(0:x){
+        z<-0
+        lim<-x-y-1
+        for(0:lim){
+            ext_num_index<-z+1
+            if(vector[z]>vector[ext_num_index]){
+                helper<-vector[z]
+                vector[z]<-vector[ext_num_index]
+                vector[ext_num_index]<-helper
+            }
+            z<-z+1
+        }
+        y<-y+1
+    }
+    print("Vector ordenado:")
+    print(vector)
+}
+
+print("Bienvenido al programa 2")
+obtener_vector()
+sort_vector()

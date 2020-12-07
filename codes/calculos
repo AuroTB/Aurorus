@@ -1,0 +1,87 @@
+func desplegar_menu(){
+    print("Operaciones disponibles:")
+    print("1. Calcular factorial")
+    print("2. Calcular potencia de un numero")
+    print("3. Calcular euler a la potencia de x")
+    print("0. Salir")
+}
+
+func calcular_factorial(){
+    factorial<-1
+    contador<-1
+    for(0:x_factorial){
+        factorial<-factorial*contador
+        contador<-contador+1
+    }
+}
+
+func calcular_potencia(){
+    resultado_pot<-1
+    for(0:potencia){
+        if(potencia>0){
+            resultado_pot<-resultado_pot*x
+        }if(potencia<0){
+            resultado_pot<-resultado_pot/x
+        }
+    }
+}
+
+func calcular_euler(){
+    aprox<-0
+    y<-0
+    for(0:10){
+        potencia<-y
+        x_factorial<-y
+        calcular_potencia()
+        calcular_factorial()
+        aprox <- aprox + resultado_pot/factorial
+        y<-y+1
+    }
+}
+
+func main(){
+    print("Bienvenido al programa 3")
+    user_input <- 1
+    while(user_input != 0){
+        desplegar_menu()
+        user_input<-read()
+        if(user_input = 1){
+            print("Dame un numero")
+            x_factorial<-read()
+            while(x_factorial<0){
+                print("Por favor dame un numero positivo.")
+                x<-read()
+            }
+            calcular_factorial()
+            print("Factorial de")
+            print(x_factorial)
+            print(":")
+            print(factorial)
+        }
+        if(user_input = 2){
+            print("Dame un numero")
+            x<-read()
+            print("Dame una potencia")
+            potencia<-read()
+            calcular_potencia()
+            print("Potencia de")
+            print(x)
+            print("a la")
+            print(potencia)
+            print(":")
+            print(resultado_pot)
+        }
+        if(user_input = 3){
+            print("Dame un numero de potencia para euler")
+            x<-read()
+            calcular_euler()
+            print("Potencia de euler a la ")
+            print(x)
+            print(":")
+            print(aprox)
+        }
+    }
+    print("Programa finalizado")
+}
+
+main()
